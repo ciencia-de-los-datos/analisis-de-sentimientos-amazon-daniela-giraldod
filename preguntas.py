@@ -49,18 +49,18 @@ def pregunta_02():
     """
 
     # Importe train_test_split
-    from ____ import ____
+    from sklearn.model_selection import train_test_split
 
     # Cargue los datos generados en la pregunta 01.
     x_tagged, y_tagged, _, _ = pregunta_01()
 
     # Divida los datos de entrenamiento y prueba. La semilla del generador de números
     # aleatorios es 12345. Use el 10% de patrones para la muestra de prueba.
-    x_train, x_test, y_train, y_test = train_test_split(
-        ____,
-        ____,
-        test_size=____,
-        random_state=____,
+    x_train, x_test, y_train, y_test = train_test_split( 
+        x_tagged, 
+        y_tagged,
+        test_size=0.1,  #esto es para usar el 10%
+        random_state=12345    #poner semilla
     )
 
     # Retorne `X_train`, `X_test`, `y_train` y `y_test`
@@ -74,13 +74,20 @@ def pregunta_03():
     """
     # Importe el stemmer de Porter
     # Importe CountVectorizer
-    from ____ import ____
+    from sklearn.feature_extraction.text import CountVectorizer
+    from nltk.stem.porter import PorterStemmer
 
     # Cree un stemeer que use el algoritmo de Porter.
-    stemmer = ____
+    stemmer = PorterStemmer()    #permite llevar las palabras a la raiz, ejemplo(jugando,jugaron,.. se lleva a jugar)
 
     # Cree una instancia del analizador de palabras (build_analyzer)
-    analyzer = ____().____()
+    vectorizer= CountVectorizer(
+        analyzer="word",
+        token_pattern=r"(?u)\b[a-zA-Z][a-zA-Z]+\b", 
+        lowercase=True
+    )
+    #_________________________________
+    analyzer =vectorizer.build_analyzer()
 
     # Retorne el analizador de palabras
     return lambda x: (stemmer.stem(w) for w in analyzer(x))
